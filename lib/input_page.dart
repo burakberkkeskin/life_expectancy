@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:life_expection/constants.dart';
+import 'package:life_expection/result_page.dart';
 
+import 'person.dart';
 import 'GenderWidget.dart';
 import 'MyContainer.dart';
 
@@ -11,11 +13,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  String? selectedGender;
-  double cigaretteCount = 0;
-  double sporDayCount = 0;
-  int height = 175;
-  int weight = 65;
+  Person person = Person();
 
   @override
   Widget build(BuildContext context) {
@@ -35,12 +33,12 @@ class _InputPageState extends State<InputPage> {
               children: [
                 Expanded(
                   child: MyContainer(
-                    child: buildRow('Boy', height),
+                    child: buildRow('Boy', person.height),
                   ),
                 ),
                 Expanded(
                   child: MyContainer(
-                    child: buildRow('Kilo', weight),
+                    child: buildRow('Kilo', person.weight),
                   ),
                 ),
               ],
@@ -52,15 +50,16 @@ class _InputPageState extends State<InputPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Haftada Kaç Gün Spor Yapıyorsunuz?', style: kTextStyle),
-                  Text(sporDayCount.round().toString(), style: kNumberStyle),
+                  Text(person.sporDayCount.round().toString(),
+                      style: kNumberStyle),
                   Slider(
                     min: 0,
                     max: 7,
-                    value: sporDayCount,
+                    value: person.sporDayCount,
                     divisions: 7,
                     onChanged: (double newValue) {
                       setState(() {
-                        sporDayCount = newValue;
+                        person.sporDayCount = newValue;
                       });
                     },
                   )
@@ -74,14 +73,15 @@ class _InputPageState extends State<InputPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text('Günde Kaç Sigara İçiyorsunuz?', style: kTextStyle),
-                  Text(cigaretteCount.round().toString(), style: kNumberStyle),
+                  Text(person.cigaretteCount.round().toString(),
+                      style: kNumberStyle),
                   Slider(
                     min: 0,
                     max: 30,
-                    value: cigaretteCount,
+                    value: person.cigaretteCount,
                     onChanged: (double newValue) {
                       setState(() {
-                        cigaretteCount = newValue;
+                        person.cigaretteCount = newValue;
                       });
                     },
                   )
@@ -96,11 +96,11 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedGender = 'kadın';
+                        person.selectedGender = 'kadın';
                       });
                     },
                     child: MyContainer(
-                      newColor: selectedGender == 'kadın'
+                      newColor: person.selectedGender == 'kadın'
                           ? Colors.pink
                           : Colors.blueGrey,
                       child: GenderWidget(
@@ -117,11 +117,11 @@ class _InputPageState extends State<InputPage> {
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        selectedGender = 'erkek';
+                        person.selectedGender = 'erkek';
                       });
                     },
                     child: MyContainer(
-                      newColor: selectedGender == 'erkek'
+                      newColor: person.selectedGender == 'erkek'
                           ? Colors.blue
                           : Colors.blueGrey,
                       child: GenderWidget(
@@ -138,12 +138,21 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
-          ElevatedButton(
-            onPressed: (){},
-            child: Text('Hesapla', style: kTextStyle),
-            style: ElevatedButton.styleFrom(
-              primary: Colors.white
-            )
+          Container(
+            margin: EdgeInsets.all(15),
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultPage(
+                                person: person,
+                              )));
+                },
+                child: Text('Hesapla', style: kTextStyle),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.white,
+                )),
           ),
         ],
       ),
@@ -176,7 +185,7 @@ class _InputPageState extends State<InputPage> {
               child: ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    text == 'Boy' ? height++ : weight++;
+                    text == 'Boy' ? person.height++ : person.weight++;
                   });
                 },
                 child: Icon(
@@ -188,7 +197,7 @@ class _InputPageState extends State<InputPage> {
             ElevatedButton(
               onPressed: () {
                 setState(() {
-                  text == 'Boy' ? height-- : weight--;
+                  text == 'Boy' ? person.height-- : person.weight--;
                 });
               },
               child: Icon(
