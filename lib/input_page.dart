@@ -138,6 +138,13 @@ class _InputPageState extends State<InputPage> {
               ],
             ),
           ),
+          ElevatedButton(
+            onPressed: (){},
+            child: Text('Hesapla', style: kTextStyle),
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white
+            )
+          ),
         ],
       ),
     );
